@@ -10,7 +10,7 @@ public class RFIDManager : MonoBehaviour
     public RFIDDatabase database;
 
     [Header("Serial")]
-    public string portName = "COM3";
+    public string portName = "COM12";
     public int baudRate = 9600;
 
     [Header("Referencias UI")]
@@ -20,9 +20,14 @@ public class RFIDManager : MonoBehaviour
     [Header("Debug sin Arduino")]
     public bool forzarModoTeclado = false;
 
+    [Header("Cola de reproduccion")]
+    public float cooldownRelectura = 1.5f;
+
     SerialPort serialPort;
     bool modoTeclado = false;
-    HashSet<string> idsReproducidas = new HashSet<string>();
+    bool reproduciendo = false;
+    Queue<RFIDEntry> colaEntradas = new Queue<RFIDEntry>();
+    Dictionary<string, float> ultimaLectura = new Dictionary<string, float>();
 
     void Start()
     {
@@ -84,7 +89,12 @@ public class RFIDManager : MonoBehaviour
 
     void ProcesarId(string id)
     {
-        if (string.IsNullOrEmpty(id) || idsReproducidas.Contains(id))
+        if (string.IsNullOrEmpty(id))
+        {
+            return;
+        }
+
+        if (ultimaLectura.TryGetValue(id, out float tiempoAnterior) && Time.time - tiempoAnterior < cooldownRelectura)
         {
             return;
         }
@@ -97,8 +107,26 @@ public class RFIDManager : MonoBehaviour
             return;
         }
 
-        idsReproducidas.Add(id);
-        StartCoroutine(ReproducirEntrada(entrada));
+        ultimaLectura[id] = Time.time;
+        colaEntradas.Enqueue(entrada);
+
+        if (!reproduciendo)
+        {
+            StartCoroutine(ProcesarCola());
+        }
+    }
+
+    IEnumerator ProcesarCola()
+    {
+        reproduciendo = true;
+
+        while (colaEntradas.Count > 0)
+        {
+            RFIDEntry entrada = colaEntradas.Dequeue();
+            yield return ReproducirEntrada(entrada);
+        }
+
+        reproduciendo = false;
     }
 
     IEnumerator ReproducirEntrada(RFIDEntry entrada)

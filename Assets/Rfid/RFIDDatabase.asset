@@ -13,11 +13,19 @@ MonoBehaviour:
   m_Name: RFIDDatabase
   m_EditorClassIdentifier: 
   entradas:
-  - nombre: webas
+  - nombre: Lector
     id: 121
     audio: {fileID: 0}
     imagen: {fileID: -1157954868241902432, guid: 7fbb650c0fb86b744ab94b7d6ec9d9ad, type: 3}
     teclaDebug: 101
+    duracionImagen: 3
+    ledsIndices: 00000000
+    colorLeds: {r: 0.9716981, g: 0.26125845, b: 0.26125845, a: 0}
+  - nombre: Lector
+    id: 122
+    audio: {fileID: 0}
+    imagen: {fileID: -5373797405029774753, guid: b4ed66d3e330fcd4293296a01f118f6f, type: 3}
+    teclaDebug: 102
     duracionImagen: 3
     ledsIndices: 00000000
     colorLeds: {r: 0.9716981, g: 0.26125845, b: 0.26125845, a: 0}
