@@ -891,8 +891,8 @@ MonoBehaviour:
   audioSource: {fileID: 1267991947}
   clip: {fileID: 8300000, guid: f6d51b619f94d3845933505202173321, type: 3}
   ledsIndices: 060000000700000008000000
-  colorLeds: {r: 1, g: 1, b: 1, a: 1}
-  textoDistancia: {fileID: 0}
+  colorLeds: {r: 1, g: 0.1273585, b: 0.1273585, a: 1}
+  textoDistancia: {fileID: 206238837}
   tiempoOcultarSinLectura: 0.5
   forzarModoTeclado: 0
   teclaDebug: 112
