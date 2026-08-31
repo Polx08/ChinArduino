@@ -767,15 +767,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1267991949}
-  - component: {fileID: 1267991948}
   - component: {fileID: 1267991947}
+  - component: {fileID: 1267991950}
   m_Layer: 0
   m_Name: Distancia
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!82 &1267991947
 AudioSource:
   m_ObjectHideFlags: 0
@@ -873,30 +873,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1267991948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1267991946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f418830904c648c4dac70b20e31f4a79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  portName: COM10
-  baudRate: 9600
-  distanciaUmbralCm: 50
-  audioSource: {fileID: 1267991947}
-  clip: {fileID: 8300000, guid: f6d51b619f94d3845933505202173321, type: 3}
-  ledsIndices: 060000000700000008000000
-  colorLeds: {r: 1, g: 0.12549019, b: 0.92057675, a: 1}
-  textoDistancia: {fileID: 206238837}
-  tiempoOcultarSinLectura: 0.5
-  forzarModoTeclado: 0
-  teclaDebug: 112
-  distanciaSimuladaDebug: 50
 --- !u!4 &1267991949
 Transform:
   m_ObjectHideFlags: 0
@@ -912,6 +888,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1267991950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267991946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f418830904c648c4dac70b20e31f4a79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portName: COM10
+  baudRate: 9600
+  distanciaUmbralCm: 100
+  audioSource: {fileID: 0}
+  clip: {fileID: 0}
+  ledsIndices: 
+  colorLeds: {r: 1, g: 1, b: 1, a: 1}
+  textoDistancia: {fileID: 0}
+  tiempoOcultarSinLectura: 0.5
+  forzarModoTeclado: 0
+  teclaDebug: 112
+  distanciaSimuladaDebug: 50
 --- !u!1 &1285010756
 GameObject:
   m_ObjectHideFlags: 0
