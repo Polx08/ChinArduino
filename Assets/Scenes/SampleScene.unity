@@ -247,7 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   database: {fileID: 11400000, guid: 0b56ed11779c1854791e4ed2f1529688, type: 2}
-  portName: COM3
+  portName: COM10
   baudRate: 9600
   imagenUI: {fileID: 1616861200}
   audioSource: {fileID: 79298838}
@@ -885,7 +885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f418830904c648c4dac70b20e31f4a79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portName: COM3
+  portName: COM10
   baudRate: 9600
   distanciaUmbralCm: 50
   audioSource: {fileID: 1267991947}

@@ -10,7 +10,7 @@ public class RFIDManager : MonoBehaviour
     public RFIDDatabase database;
 
     [Header("Serial")]
-    public string portName = "COM12";
+    public string portName = "COM3";
     public int baudRate = 9600;
 
     [Header("Referencias UI")]
@@ -21,6 +21,7 @@ public class RFIDManager : MonoBehaviour
     public bool forzarModoTeclado = false;
 
     [Header("Cola de reproduccion")]
+    [Tooltip("Tiempo minimo entre lecturas de la misma id, para evitar que una sola pasada se registre varias veces")]
     public float cooldownRelectura = 1.5f;
 
     SerialPort serialPort;
@@ -49,12 +50,22 @@ public class RFIDManager : MonoBehaviour
             serialPort.Open();
             serialPort.ReadTimeout = 25;
             Debug.Log("Puerto abierto exitosamente.");
+            EnviarComandoApagarLeds();
         }
         catch (System.Exception e)
         {
             modoTeclado = true;
             Debug.LogWarning("No se pudo abrir el puerto, usando modo teclado: " + e.Message);
         }
+    }
+
+    void EnviarComandoApagarLeds()
+    {
+        try
+        {
+            serialPort.WriteLine("LED:OFF");
+        }
+        catch (System.Exception) { }
     }
 
     void Update()
@@ -188,7 +199,17 @@ public class RFIDManager : MonoBehaviour
         }
     }
 
+    void OnDisable()
+    {
+        CerrarPuerto();
+    }
+
     void OnApplicationQuit()
+    {
+        CerrarPuerto();
+    }
+
+    void CerrarPuerto()
     {
         if (serialPort != null && serialPort.IsOpen)
         {

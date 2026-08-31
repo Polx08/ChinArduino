@@ -96,7 +96,7 @@ public class Proximidad : MonoBehaviour
             textoDistancia.text = distanciaCm.ToString("0") + " cm";
         }
 
-        if (!yaReproducido && distanciaCm <= distanciaUmbralCm)
+        if (!yaReproducido && distanciaCm >= distanciaUmbralCm)
         {
             Reproducir();
         }
@@ -155,7 +155,17 @@ public class Proximidad : MonoBehaviour
         }
     }
 
+    void OnDisable()
+    {
+        CerrarPuerto();
+    }
+
     void OnApplicationQuit()
+    {
+        CerrarPuerto();
+    }
+
+    void CerrarPuerto()
     {
         if (serialPort != null && serialPort.IsOpen)
         {
