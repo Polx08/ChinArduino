@@ -13,19 +13,27 @@ MonoBehaviour:
   m_Name: RFIDDatabase
   m_EditorClassIdentifier: 
   entradas:
-  - nombre: Lector
-    id: 121
+  - nombre: Sensblue
+    id: 6ADEC7A5
     audio: {fileID: 0}
     imagen: {fileID: -1157954868241902432, guid: 7fbb650c0fb86b744ab94b7d6ec9d9ad, type: 3}
     teclaDebug: 101
     duracionImagen: 3
-    ledsIndices: 00000000
-    colorLeds: {r: 0.9716981, g: 0.26125845, b: 0.26125845, a: 0}
-  - nombre: Lector
-    id: 122
+    ledsIndices: 070000000800000009000000
+    colorLeds: {r: 0.8807585, g: 1, b: 0, a: 0}
+  - nombre: tarjet
+    id: 57082A15
     audio: {fileID: 0}
     imagen: {fileID: -5373797405029774753, guid: b4ed66d3e330fcd4293296a01f118f6f, type: 3}
     teclaDebug: 102
     duracionImagen: 3
-    ledsIndices: 00000000
-    colorLeds: {r: 0.9716981, g: 0.26125845, b: 0.26125845, a: 0}
+    ledsIndices: 010000000200000003000000
+    colorLeds: {r: 0.8584906, g: 0.3132284, b: 0, a: 0}
+  - nombre: tarjet
+    id: 7C34C177
+    audio: {fileID: 0}
+    imagen: {fileID: -5373797405029774753, guid: b4ed66d3e330fcd4293296a01f118f6f, type: 3}
+    teclaDebug: 102
+    duracionImagen: 3
+    ledsIndices: 040000000500000006000000
+    colorLeds: {r: 0.107923314, g: 0.8962264, b: 0.012682426, a: 0}

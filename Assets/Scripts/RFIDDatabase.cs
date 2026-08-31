@@ -18,7 +18,7 @@ public class RFIDDatabase : ScriptableObject
         return null;
     }
 }
-//LOL
+
 [System.Serializable]
 public class RFIDEntry
 {
@@ -32,7 +32,7 @@ public class RFIDEntry
     [Tooltip("Si es 0 o menor, se usa la duracion del audio")]
     public float duracionImagen = -1f;
 
-    [Header("Anillo LED WS2812 (12 leds)")]
+    [Header("Anillo LED WS2812 (16 leds)")]
     public List<int> ledsIndices = new List<int>();
     public Color colorLeds = Color.white;
 }

@@ -14,7 +14,7 @@ public class Proximidad : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip clip;
 
-    [Header("Anillo LED WS2812 (12 leds)")]
+    [Header("Anillo LED WS2812 (16 leds)")]
     public List<int> ledsIndices = new List<int>();
     public Color colorLeds = Color.white;
 
