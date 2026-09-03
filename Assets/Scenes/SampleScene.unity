@@ -246,12 +246,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b04279fa60f0c3745b8a93f0969b2c36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serial: {fileID: 2144108382}
   database: {fileID: 11400000, guid: 0b56ed11779c1854791e4ed2f1529688, type: 2}
-  portName: COM10
-  baudRate: 9600
   imagenUI: {fileID: 1616861200}
   audioSource: {fileID: 79298838}
-  forzarModoTeclado: 0
   cooldownRelectura: 1.5
 --- !u!4 &79298840
 Transform:
@@ -775,7 +773,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &1267991947
 AudioSource:
   m_ObjectHideFlags: 0
@@ -900,18 +898,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f418830904c648c4dac70b20e31f4a79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portName: COM10
-  baudRate: 9600
+  serial: {fileID: 2144108382}
   distanciaUmbralCm: 100
-  audioSource: {fileID: 0}
-  clip: {fileID: 0}
-  ledsIndices: 
-  colorLeds: {r: 1, g: 1, b: 1, a: 1}
-  textoDistancia: {fileID: 0}
+  audioSource: {fileID: 1267991947}
+  clip: {fileID: 8300000, guid: cb4f2a951dc84954ab5c5c925723ab5d, type: 3}
+  ledsIndices: 0000000001000000030000000400000005000000060000000700000008000000090000000a0000000c0000000d0000000e0000000f00000002000000
+  colorLeds: {r: 0.12259703, g: 0.714205, b: 0.8962264, a: 1}
+  textoDistancia: {fileID: 206238837}
   tiempoOcultarSinLectura: 0.5
-  forzarModoTeclado: 0
-  teclaDebug: 112
   distanciaSimuladaDebug: 50
+  teclaDebug: 112
 --- !u!1 &1285010756
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,7 +1332,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2144108381}
-  - component: {fileID: 2144108380}
+  - component: {fileID: 2144108382}
   m_Layer: 0
   m_Name: Adruino
   m_TagString: Untagged
@@ -1344,25 +1340,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2144108380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2144108379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 008102014b63097459c5a6d872b693b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteAEditar: {fileID: 1907104369}
-  colorNormal: {r: 1, g: 1, b: 1, a: 1}
-  colorPresionado: {r: 0, g: 1, b: 0, a: 1}
-  forzarModoTeclado: 0
-  teclaDebug: 32
-  valorTecladoPresionado: 1
-  valorTecladoSuelto: 0
 --- !u!4 &2144108381
 Transform:
   m_ObjectHideFlags: 0
@@ -1378,6 +1355,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2144108382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144108379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 761bf9daadadfb748934a7559b73846d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portName: COM7
+  baudRate: 9600
+  forzarModoTeclado: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

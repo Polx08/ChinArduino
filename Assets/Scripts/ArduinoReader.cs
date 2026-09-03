@@ -3,7 +3,7 @@ using System.IO.Ports;
 
 public class ArduinoReader : MonoBehaviour
 {
-    private string portName = "COM10";
+    private string portName = "COM7";
     private int baudRate = 9600;
 
     private SerialPort serialPort;

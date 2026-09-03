@@ -12,28 +12,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64b676f221adab4479ffb45b0b8df3ef, type: 3}
   m_Name: RFIDDatabase
   m_EditorClassIdentifier: 
-  entradas:
-  - nombre: Sensblue
+  seccion1:
+  - nombre: tarjetablanca
     id: 6ADEC7A5
-    audio: {fileID: 0}
-    imagen: {fileID: -1157954868241902432, guid: 7fbb650c0fb86b744ab94b7d6ec9d9ad, type: 3}
-    teclaDebug: 101
-    duracionImagen: 3
-    ledsIndices: 070000000800000009000000
-    colorLeds: {r: 0.8807585, g: 1, b: 0, a: 0}
-  - nombre: tarjet
-    id: 57082A15
-    audio: {fileID: 0}
+    audio: {fileID: 8300000, guid: f6d51b619f94d3845933505202173321, type: 3}
     imagen: {fileID: -5373797405029774753, guid: b4ed66d3e330fcd4293296a01f118f6f, type: 3}
-    teclaDebug: 102
+    teclaDebug: 0
     duracionImagen: 3
-    ledsIndices: 010000000200000003000000
-    colorLeds: {r: 0.8584906, g: 0.3132284, b: 0, a: 0}
-  - nombre: tarjet
+    ledsIndices: 00000000010000000200000003000000
+    colorLeds: {r: 1, g: 0, b: 0.32455254, a: 0}
+  - nombre: kl
     id: 7C34C177
-    audio: {fileID: 0}
+    audio: {fileID: 8300000, guid: f6d51b619f94d3845933505202173321, type: 3}
     imagen: {fileID: -5373797405029774753, guid: b4ed66d3e330fcd4293296a01f118f6f, type: 3}
-    teclaDebug: 102
+    teclaDebug: 0
     duracionImagen: 3
-    ledsIndices: 040000000500000006000000
-    colorLeds: {r: 0.107923314, g: 0.8962264, b: 0.012682426, a: 0}
+    ledsIndices: 04000000050000000600000007000000
+    colorLeds: {r: 1, g: 0.34400776, b: 0, a: 0}
+  - nombre: kj
+    id: 57082A15
+    audio: {fileID: 8300000, guid: f6d51b619f94d3845933505202173321, type: 3}
+    imagen: {fileID: -5373797405029774753, guid: b4ed66d3e330fcd4293296a01f118f6f, type: 3}
+    teclaDebug: 0
+    duracionImagen: 3
+    ledsIndices: 08000000090000000a0000000b000000
+    colorLeds: {r: 0.29336655, g: 1, b: 0, a: 0}
+  - nombre: kj
+    id: 5C076717
+    audio: {fileID: 8300000, guid: f6d51b619f94d3845933505202173321, type: 3}
+    imagen: {fileID: -5373797405029774753, guid: b4ed66d3e330fcd4293296a01f118f6f, type: 3}
+    teclaDebug: 0
+    duracionImagen: 3
+    ledsIndices: 0c0000000d0000000e0000000f000000
+    colorLeds: {r: 0, g: 0.23935056, b: 1, a: 0}
+  audioFinalSeccion1: {fileID: 8300000, guid: 40a9469ef329b1f4ab910bb3d6e2d66e, type: 3}
+  seccion2:
+  - nombre: tarjetablanca
+    id: 7C34C177
+    audio: {fileID: 8300000, guid: f6d51b619f94d3845933505202173321, type: 3}
+    imagen: {fileID: 0}
+    teclaDebug: 0
+    duracionImagen: 0
+    ledsIndices: 0000000001000000
+    colorLeds: {r: 1, g: 0, b: 0.8657131, a: 0}
+  audioFinal: {fileID: 8300000, guid: 40a9469ef329b1f4ab910bb3d6e2d66e, type: 3}

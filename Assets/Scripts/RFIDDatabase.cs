@@ -4,11 +4,17 @@ using System.Collections.Generic;
 [CreateAssetMenu(fileName = "RFIDDatabase", menuName = "RFID/Database")]
 public class RFIDDatabase : ScriptableObject
 {
-    public List<RFIDEntry> entradas = new List<RFIDEntry>();
+    [Header("Parte 1")]
+    public List<RFIDEntry> seccion1 = new List<RFIDEntry>();
+    public AudioClip audioFinalSeccion1;
 
-    public RFIDEntry BuscarPorId(string id)
+    [Header("Parte 2")]
+    public List<RFIDEntry> seccion2 = new List<RFIDEntry>();
+    public AudioClip audioFinal;
+
+    public static RFIDEntry BuscarPorId(List<RFIDEntry> lista, string id)
     {
-        foreach (var entrada in entradas)
+        foreach (var entrada in lista)
         {
             if (entrada.id.Trim().Equals(id.Trim(), System.StringComparison.OrdinalIgnoreCase))
             {

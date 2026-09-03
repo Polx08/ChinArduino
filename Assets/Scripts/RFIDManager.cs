@@ -1,33 +1,35 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO.Ports;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 public class RFIDManager : MonoBehaviour
 {
+    [Header("Serial compartido")]
+    public ArduinoSerialManager serial;
+
     [Header("Base de datos")]
     public RFIDDatabase database;
-
-    [Header("Serial")]
-    public string portName = "COM3";
-    public int baudRate = 9600;
 
     [Header("Referencias UI")]
     public Image imagenUI;
     public AudioSource audioSource;
 
-    [Header("Debug sin Arduino")]
-    public bool forzarModoTeclado = false;
+    [Header("Bloqueo inicial (opcional)")]
+    [Tooltip("Si se asigna, el RFID no responde hasta que este sensor se active (ej: abrir el cofre)")]
+    public Proximidad sensorInicio;
 
     [Header("Cola de reproduccion")]
     [Tooltip("Tiempo minimo entre lecturas de la misma id, para evitar que una sola pasada se registre varias veces")]
     public float cooldownRelectura = 1.5f;
 
-    SerialPort serialPort;
-    bool modoTeclado = false;
+    int seccionActual = 1;
     bool reproduciendo = false;
-    Queue<RFIDEntry> colaEntradas = new Queue<RFIDEntry>();
+    bool ledsApagados = false;
+    bool cofreAbierto = false;
+    HashSet<string> idsCompletados = new HashSet<string>();
+    Queue<IEnumerator> cola = new Queue<IEnumerator>();
     Dictionary<string, float> ultimaLectura = new Dictionary<string, float>();
 
     void Start()
@@ -37,70 +39,67 @@ public class RFIDManager : MonoBehaviour
             imagenUI.enabled = false;
         }
 
-        if (forzarModoTeclado)
+        if (sensorInicio != null)
         {
-            modoTeclado = true;
-            Debug.Log("Modo teclado forzado, no se intenta abrir el puerto serial.");
-            return;
+            sensorInicio.OnActivado += () => cofreAbierto = true;
+        }
+        else
+        {
+            cofreAbierto = true;
         }
 
-        try
+        if (serial != null)
         {
-            serialPort = new SerialPort(portName, baudRate);
-            serialPort.Open();
-            serialPort.ReadTimeout = 25;
-            Debug.Log("Puerto abierto exitosamente.");
-            EnviarComandoApagarLeds();
-        }
-        catch (System.Exception e)
-        {
-            modoTeclado = true;
-            Debug.LogWarning("No se pudo abrir el puerto, usando modo teclado: " + e.Message);
+            serial.OnLineaRecibida += ProcesarId;
+            serial.OnConectado += ApagarLedsAlConectar;
         }
     }
 
-    void EnviarComandoApagarLeds()
+    void ApagarLedsAlConectar()
     {
-        try
+        if (!ledsApagados)
         {
-            serialPort.WriteLine("LED:OFF");
+            ledsApagados = true;
+            serial.EnviarComando("LED:OFF");
         }
-        catch (System.Exception) { }
     }
 
     void Update()
     {
-        if (database == null)
+        if (database == null || serial == null || !serial.ModoTeclado || !cofreAbierto)
         {
             return;
         }
 
-        if (modoTeclado)
+        foreach (var entrada in ListaActiva())
         {
-            foreach (var entrada in database.entradas)
+            if (entrada.teclaDebug != KeyCode.None && Input.GetKeyDown(entrada.teclaDebug))
             {
-                if (entrada.teclaDebug != KeyCode.None && Input.GetKeyDown(entrada.teclaDebug))
-                {
-                    ProcesarId(entrada.id);
-                }
+                ProcesarId(entrada.id);
             }
-            return;
         }
+    }
 
-        if (serialPort != null && serialPort.IsOpen)
-        {
-            try
-            {
-                string dato = serialPort.ReadLine();
-                ProcesarId(dato.Trim());
-            }
-            catch (System.Exception) { }
-        }
+    List<RFIDEntry> ListaActiva()
+    {
+        return seccionActual == 1 ? database.seccion1 : database.seccion2;
     }
 
     void ProcesarId(string id)
     {
-        if (string.IsNullOrEmpty(id))
+        if (database == null || string.IsNullOrEmpty(id))
+        {
+            return;
+        }
+
+        if (!Regex.IsMatch(id, @"^[0-9A-Fa-f]+$"))
+        {
+            return;
+        }
+
+        Debug.Log("RFID leido: " + id);
+
+        if (!cofreAbierto)
         {
             return;
         }
@@ -110,16 +109,22 @@ public class RFIDManager : MonoBehaviour
             return;
         }
 
-        RFIDEntry entrada = database.BuscarPorId(id);
+        List<RFIDEntry> listaActiva = ListaActiva();
+        RFIDEntry entrada = RFIDDatabase.BuscarPorId(listaActiva, id);
 
         if (entrada == null)
         {
-            Debug.LogWarning("ID no registrada: " + id);
             return;
         }
 
         ultimaLectura[id] = Time.time;
-        colaEntradas.Enqueue(entrada);
+        idsCompletados.Add(id);
+        cola.Enqueue(ReproducirEntrada(entrada));
+
+        if (SeccionCompleta(listaActiva))
+        {
+            cola.Enqueue(CompletarSeccion());
+        }
 
         if (!reproduciendo)
         {
@@ -127,14 +132,25 @@ public class RFIDManager : MonoBehaviour
         }
     }
 
+    bool SeccionCompleta(List<RFIDEntry> lista)
+    {
+        foreach (var entrada in lista)
+        {
+            if (!idsCompletados.Contains(entrada.id))
+            {
+                return false;
+            }
+        }
+        return lista.Count > 0;
+    }
+
     IEnumerator ProcesarCola()
     {
         reproduciendo = true;
 
-        while (colaEntradas.Count > 0)
+        while (cola.Count > 0)
         {
-            RFIDEntry entrada = colaEntradas.Dequeue();
-            yield return ReproducirEntrada(entrada);
+            yield return cola.Dequeue();
         }
 
         reproduciendo = false;
@@ -148,9 +164,11 @@ public class RFIDManager : MonoBehaviour
             imagenUI.enabled = true;
         }
 
-        if (entrada.ledsIndices.Count > 0)
+        if (entrada.ledsIndices.Count > 0 && serial != null)
         {
-            EnviarComandoLeds(entrada.ledsIndices, entrada.colorLeds);
+            string indicesStr = string.Join(",", entrada.ledsIndices);
+            string colorHex = ColorUtility.ToHtmlStringRGB(entrada.colorLeds);
+            serial.EnviarComando("LED:" + indicesStr + ":" + colorHex);
         }
 
         float duracion = entrada.duracionImagen > 0f ? entrada.duracionImagen : 0f;
@@ -174,46 +192,35 @@ public class RFIDManager : MonoBehaviour
         }
     }
 
-    void EnviarComandoLeds(List<int> indices, Color color)
+    IEnumerator CompletarSeccion()
     {
-        string indicesStr = string.Join(",", indices);
-        string colorHex = ColorUtility.ToHtmlStringRGB(color);
-        string comando = "LED:" + indicesStr + ":" + colorHex;
-
-        if (modoTeclado)
+        if (serial != null)
         {
-            Debug.Log("Modo teclado, comando LED no enviado: " + comando);
-            return;
+            serial.EnviarComando("LED:OFF");
         }
 
-        if (serialPort != null && serialPort.IsOpen)
+        AudioClip audioClip = seccionActual == 1 ? database.audioFinalSeccion1 : database.audioFinal;
+
+        if (seccionActual == 1)
         {
-            try
-            {
-                serialPort.WriteLine(comando);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogWarning("No se pudo enviar comando LED: " + e.Message);
-            }
+            seccionActual = 2;
+            idsCompletados.Clear();
+        }
+
+        if (audioSource != null && audioClip != null)
+        {
+            audioSource.clip = audioClip;
+            audioSource.Play();
+            yield return new WaitForSeconds(audioClip.length);
         }
     }
 
     void OnDisable()
     {
-        CerrarPuerto();
-    }
-
-    void OnApplicationQuit()
-    {
-        CerrarPuerto();
-    }
-
-    void CerrarPuerto()
-    {
-        if (serialPort != null && serialPort.IsOpen)
+        if (serial != null)
         {
-            serialPort.Close();
+            serial.OnLineaRecibida -= ProcesarId;
+            serial.OnConectado -= ApagarLedsAlConectar;
         }
     }
 }

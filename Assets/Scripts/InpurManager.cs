@@ -3,7 +3,7 @@ using System.IO.Ports;
 
 public class InpurManager : MonoBehaviour
 {
-    SerialPort stream = new SerialPort("COM3", 9600);
+    SerialPort stream = new SerialPort("COM7", 9600);
 
     [Header("Configuracion Visual")]
     public SpriteRenderer spriteAEditar;
