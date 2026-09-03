@@ -250,6 +250,7 @@ MonoBehaviour:
   database: {fileID: 11400000, guid: 0b56ed11779c1854791e4ed2f1529688, type: 2}
   imagenUI: {fileID: 1616861200}
   audioSource: {fileID: 79298838}
+  sensorInicio: {fileID: 0}
   cooldownRelectura: 1.5
 --- !u!4 &79298840
 Transform:
@@ -899,10 +900,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serial: {fileID: 2144108382}
-  distanciaUmbralCm: 100
+  distanciaUmbralCm: 1000
   audioSource: {fileID: 1267991947}
-  clip: {fileID: 8300000, guid: cb4f2a951dc84954ab5c5c925723ab5d, type: 3}
-  ledsIndices: 0000000001000000030000000400000005000000060000000700000008000000090000000a0000000c0000000d0000000e0000000f00000002000000
+  clip: {fileID: 8300000, guid: faa2326bafaa0f348a69dcfac54c5ac8, type: 3}
+  cantidadLedsAnillo: 16
   colorLeds: {r: 0.12259703, g: 0.714205, b: 0.8962264, a: 1}
   textoDistancia: {fileID: 206238837}
   tiempoOcultarSinLectura: 0.5

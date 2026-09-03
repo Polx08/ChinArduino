@@ -15,23 +15,23 @@ MonoBehaviour:
   seccion1:
   - nombre: tarjetablanca
     id: 6ADEC7A5
-    audio: {fileID: 8300000, guid: f6d51b619f94d3845933505202173321, type: 3}
-    imagen: {fileID: -5373797405029774753, guid: b4ed66d3e330fcd4293296a01f118f6f, type: 3}
+    audio: {fileID: 8300000, guid: 68ded7df0bd8ca64182b8f6f4f31fbc7, type: 3}
+    imagen: {fileID: 4802015178379530661, guid: bbe9dedfff1cb524eb3dffcf70ad1e8c, type: 3}
     teclaDebug: 0
     duracionImagen: 3
     ledsIndices: 00000000010000000200000003000000
     colorLeds: {r: 1, g: 0, b: 0.32455254, a: 0}
   - nombre: kl
     id: 7C34C177
-    audio: {fileID: 8300000, guid: f6d51b619f94d3845933505202173321, type: 3}
-    imagen: {fileID: -5373797405029774753, guid: b4ed66d3e330fcd4293296a01f118f6f, type: 3}
+    audio: {fileID: 8300000, guid: 85a79495c6d4dbe4d8c46a4947371e5c, type: 3}
+    imagen: {fileID: -77707763272680521, guid: dcaad925700d66240b61ad31bcc0b479, type: 3}
     teclaDebug: 0
     duracionImagen: 3
     ledsIndices: 04000000050000000600000007000000
     colorLeds: {r: 1, g: 0.34400776, b: 0, a: 0}
   - nombre: kj
     id: 57082A15
-    audio: {fileID: 8300000, guid: f6d51b619f94d3845933505202173321, type: 3}
+    audio: {fileID: 8300000, guid: 11b589bf1b5cc9042aed1beb806491bd, type: 3}
     imagen: {fileID: -5373797405029774753, guid: b4ed66d3e330fcd4293296a01f118f6f, type: 3}
     teclaDebug: 0
     duracionImagen: 3
@@ -39,7 +39,7 @@ MonoBehaviour:
     colorLeds: {r: 0.29336655, g: 1, b: 0, a: 0}
   - nombre: kj
     id: 5C076717
-    audio: {fileID: 8300000, guid: f6d51b619f94d3845933505202173321, type: 3}
+    audio: {fileID: 8300000, guid: 4c5737d346ca1a544800e32873a264d8, type: 3}
     imagen: {fileID: -5373797405029774753, guid: b4ed66d3e330fcd4293296a01f118f6f, type: 3}
     teclaDebug: 0
     duracionImagen: 3
@@ -49,10 +49,10 @@ MonoBehaviour:
   seccion2:
   - nombre: tarjetablanca
     id: 7C34C177
-    audio: {fileID: 8300000, guid: f6d51b619f94d3845933505202173321, type: 3}
-    imagen: {fileID: 0}
+    audio: {fileID: 8300000, guid: a99ca810e059e39408f2517258708725, type: 3}
+    imagen: {fileID: 4802015178379530661, guid: bbe9dedfff1cb524eb3dffcf70ad1e8c, type: 3}
     teclaDebug: 0
     duracionImagen: 0
     ledsIndices: 0000000001000000
     colorLeds: {r: 1, g: 0, b: 0.8657131, a: 0}
-  audioFinal: {fileID: 8300000, guid: 40a9469ef329b1f4ab910bb3d6e2d66e, type: 3}
+  audioFinal: {fileID: 8300000, guid: 7c6518c75fab87544867487218d95bc4, type: 3}
