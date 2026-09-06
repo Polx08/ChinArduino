@@ -4,25 +4,33 @@ using System.Collections.Generic;
 [CreateAssetMenu(fileName = "RFIDDatabase", menuName = "RFID/Database")]
 public class RFIDDatabase : ScriptableObject
 {
-    [Header("Parte 1")]
-    public List<RFIDEntry> seccion1 = new List<RFIDEntry>();
-    public AudioClip audioFinalSeccion1;
-
-    [Header("Parte 2")]
-    public List<RFIDEntry> seccion2 = new List<RFIDEntry>();
+    public List<TagPair> pares = new List<TagPair>();
     public AudioClip audioFinal;
 
-    public static RFIDEntry BuscarPorId(List<RFIDEntry> lista, string id)
+    public RFIDEntry BuscarEntradaPorId(string id)
     {
-        foreach (var entrada in lista)
+        foreach (var par in pares)
         {
-            if (entrada.id.Trim().Equals(id.Trim(), System.StringComparison.OrdinalIgnoreCase))
+            if (par.principal != null && par.principal.id.Trim().Equals(id.Trim(), System.StringComparison.OrdinalIgnoreCase))
             {
-                return entrada;
+                return par.principal;
+            }
+
+            if (par.pareja != null && par.pareja.id.Trim().Equals(id.Trim(), System.StringComparison.OrdinalIgnoreCase))
+            {
+                return par.pareja;
             }
         }
         return null;
     }
+}
+
+[System.Serializable]
+public class TagPair
+{
+    public string nombre;
+    public RFIDEntry principal;
+    public RFIDEntry pareja;
 }
 
 [System.Serializable]

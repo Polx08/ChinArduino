@@ -24,11 +24,11 @@ public class RFIDManager : MonoBehaviour
     [Tooltip("Tiempo minimo entre lecturas de la misma id, para evitar que una sola pasada se registre varias veces")]
     public float cooldownRelectura = 1.5f;
 
-    int seccionActual = 1;
     bool reproduciendo = false;
     bool ledsApagados = false;
     bool cofreAbierto = false;
-    HashSet<string> idsCompletados = new HashSet<string>();
+    TagPair parEnEspera = null;
+    HashSet<TagPair> paresCompletados = new HashSet<TagPair>();
     Queue<IEnumerator> cola = new Queue<IEnumerator>();
     Dictionary<string, float> ultimaLectura = new Dictionary<string, float>();
 
@@ -71,18 +71,18 @@ public class RFIDManager : MonoBehaviour
             return;
         }
 
-        foreach (var entrada in ListaActiva())
+        foreach (var par in database.pares)
         {
-            if (entrada.teclaDebug != KeyCode.None && Input.GetKeyDown(entrada.teclaDebug))
+            if (par.principal != null && par.principal.teclaDebug != KeyCode.None && Input.GetKeyDown(par.principal.teclaDebug))
             {
-                ProcesarId(entrada.id);
+                ProcesarId(par.principal.id);
+            }
+
+            if (par.pareja != null && par.pareja.teclaDebug != KeyCode.None && Input.GetKeyDown(par.pareja.teclaDebug))
+            {
+                ProcesarId(par.pareja.id);
             }
         }
-    }
-
-    List<RFIDEntry> ListaActiva()
-    {
-        return seccionActual == 1 ? database.seccion1 : database.seccion2;
     }
 
     void ProcesarId(string id)
@@ -109,8 +109,7 @@ public class RFIDManager : MonoBehaviour
             return;
         }
 
-        List<RFIDEntry> listaActiva = ListaActiva();
-        RFIDEntry entrada = RFIDDatabase.BuscarPorId(listaActiva, id);
+        RFIDEntry entrada = database.BuscarEntradaPorId(id);
 
         if (entrada == null)
         {
@@ -118,13 +117,9 @@ public class RFIDManager : MonoBehaviour
         }
 
         ultimaLectura[id] = Time.time;
-        idsCompletados.Add(id);
         cola.Enqueue(ReproducirEntrada(entrada));
 
-        if (SeccionCompleta(listaActiva))
-        {
-            cola.Enqueue(CompletarSeccion());
-        }
+        ActualizarProgreso(id);
 
         if (!reproduciendo)
         {
@@ -132,16 +127,50 @@ public class RFIDManager : MonoBehaviour
         }
     }
 
-    bool SeccionCompleta(List<RFIDEntry> lista)
+    void ActualizarProgreso(string id)
     {
-        foreach (var entrada in lista)
+        if (parEnEspera != null)
         {
-            if (!idsCompletados.Contains(entrada.id))
+            bool esLaPareja = parEnEspera.pareja != null &&
+                parEnEspera.pareja.id.Trim().Equals(id.Trim(), System.StringComparison.OrdinalIgnoreCase);
+
+            if (esLaPareja)
             {
-                return false;
+                paresCompletados.Add(parEnEspera);
+                parEnEspera = null;
+
+                if (paresCompletados.Count >= database.pares.Count)
+                {
+                    cola.Enqueue(FinalizarExperiencia());
+                }
+            }
+
+            return;
+        }
+
+        TagPair par = BuscarParPorPrincipalPendiente(id);
+
+        if (par != null)
+        {
+            parEnEspera = par;
+        }
+    }
+
+    TagPair BuscarParPorPrincipalPendiente(string id)
+    {
+        foreach (var par in database.pares)
+        {
+            if (paresCompletados.Contains(par))
+            {
+                continue;
+            }
+
+            if (par.principal != null && par.principal.id.Trim().Equals(id.Trim(), System.StringComparison.OrdinalIgnoreCase))
+            {
+                return par;
             }
         }
-        return lista.Count > 0;
+        return null;
     }
 
     IEnumerator ProcesarCola()
@@ -192,26 +221,18 @@ public class RFIDManager : MonoBehaviour
         }
     }
 
-    IEnumerator CompletarSeccion()
+    IEnumerator FinalizarExperiencia()
     {
         if (serial != null)
         {
-            serial.EnviarComando("LED:OFF");
+            serial.EnviarComando("MOTOR:ON");
         }
 
-        AudioClip audioClip = seccionActual == 1 ? database.audioFinalSeccion1 : database.audioFinal;
-
-        if (seccionActual == 1)
+        if (audioSource != null && database.audioFinal != null)
         {
-            seccionActual = 2;
-            idsCompletados.Clear();
-        }
-
-        if (audioSource != null && audioClip != null)
-        {
-            audioSource.clip = audioClip;
+            audioSource.clip = database.audioFinal;
             audioSource.Play();
-            yield return new WaitForSeconds(audioClip.length);
+            yield return new WaitForSeconds(database.audioFinal.length);
         }
     }
 
