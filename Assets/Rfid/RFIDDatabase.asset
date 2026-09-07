@@ -12,47 +12,102 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64b676f221adab4479ffb45b0b8df3ef, type: 3}
   m_Name: RFIDDatabase
   m_EditorClassIdentifier: 
-  seccion1:
-  - nombre: tarjetablanca
-    id: 6ADEC7A5
-    audio: {fileID: 8300000, guid: 68ded7df0bd8ca64182b8f6f4f31fbc7, type: 3}
-    imagen: {fileID: 4802015178379530661, guid: bbe9dedfff1cb524eb3dffcf70ad1e8c, type: 3}
-    teclaDebug: 0
-    duracionImagen: 3
-    ledsIndices: 00000000010000000200000003000000
-    colorLeds: {r: 1, g: 0, b: 0.32455254, a: 0}
-  - nombre: kl
-    id: 7C34C177
-    audio: {fileID: 8300000, guid: 85a79495c6d4dbe4d8c46a4947371e5c, type: 3}
-    imagen: {fileID: -77707763272680521, guid: dcaad925700d66240b61ad31bcc0b479, type: 3}
-    teclaDebug: 0
-    duracionImagen: 3
-    ledsIndices: 04000000050000000600000007000000
-    colorLeds: {r: 1, g: 0.34400776, b: 0, a: 0}
-  - nombre: kj
-    id: 57082A15
-    audio: {fileID: 8300000, guid: 11b589bf1b5cc9042aed1beb806491bd, type: 3}
-    imagen: {fileID: -5373797405029774753, guid: b4ed66d3e330fcd4293296a01f118f6f, type: 3}
-    teclaDebug: 0
-    duracionImagen: 3
-    ledsIndices: 08000000090000000a0000000b000000
-    colorLeds: {r: 0.29336655, g: 1, b: 0, a: 0}
-  - nombre: kj
-    id: 5C076717
-    audio: {fileID: 8300000, guid: 4c5737d346ca1a544800e32873a264d8, type: 3}
-    imagen: {fileID: -5373797405029774753, guid: b4ed66d3e330fcd4293296a01f118f6f, type: 3}
-    teclaDebug: 0
-    duracionImagen: 3
-    ledsIndices: 0c0000000d0000000e0000000f000000
-    colorLeds: {r: 0, g: 0.23935056, b: 1, a: 0}
-  audioFinalSeccion1: {fileID: 8300000, guid: 40a9469ef329b1f4ab910bb3d6e2d66e, type: 3}
-  seccion2:
-  - nombre: tarjetablanca
-    id: 7C34C177
-    audio: {fileID: 8300000, guid: a99ca810e059e39408f2517258708725, type: 3}
-    imagen: {fileID: 4802015178379530661, guid: bbe9dedfff1cb524eb3dffcf70ad1e8c, type: 3}
-    teclaDebug: 0
-    duracionImagen: 0
-    ledsIndices: 0000000001000000
-    colorLeds: {r: 1, g: 0, b: 0.8657131, a: 0}
+  pares:
+  - nombre: ollas
+    principal:
+      nombre: olla
+      id: 047C7AAB7D2681
+      audio: {fileID: 8300000, guid: f2b5414f4ffa67040adcd7ae7b28e93c, type: 3}
+      imagen: {fileID: 7420704234730557547, guid: 35c08f81b1e22e94ab53ddd027081107, type: 3}
+      teclaDebug: 0
+      duracionImagen: 5
+      ledsIndices: 00000000
+      colorLeds: {r: 0.8962264, g: 0.2747864, b: 0.89411765, a: 0}
+    pareja:
+      nombre: olla2
+      id: 044993AB7D2681
+      audio: {fileID: 8300000, guid: 18391df385ab3fd4d9363c4d66a54c3c, type: 3}
+      imagen: {fileID: 7420704234730557547, guid: 35c08f81b1e22e94ab53ddd027081107, type: 3}
+      teclaDebug: 0
+      duracionImagen: 5
+      ledsIndices: 0100000002000000
+      colorLeds: {r: 0.8980393, g: 0.27450982, b: 0.8941177, a: 0}
+  - nombre: Cucharas
+    principal:
+      nombre: Cuchara1
+      id: 04D8A1AB7D2681
+      audio: {fileID: 8300000, guid: 6672a08eeba70b64b8ed4b40bf630ee7, type: 3}
+      imagen: {fileID: -6729266153366762664, guid: e8c7d99edb5c11546a5f9995a454feed, type: 3}
+      teclaDebug: 0
+      duracionImagen: 5
+      ledsIndices: 03000000
+      colorLeds: {r: 0.8980392, g: 0.2917646, b: 0.27450976, a: 0}
+    pareja:
+      nombre: Cuchara2
+      id: 04A56BAB7D2681
+      audio: {fileID: 8300000, guid: 427f8342261ad9f46a47f6a49b7e379c, type: 3}
+      imagen: {fileID: -6729266153366762664, guid: e8c7d99edb5c11546a5f9995a454feed, type: 3}
+      teclaDebug: 0
+      duracionImagen: 5
+      ledsIndices: 0400000005000000
+      colorLeds: {r: 0.8980393, g: 0.2901961, b: 0.27450982, a: 0}
+  - nombre: Tambores
+    principal:
+      nombre: Tambor1
+      id: 04B95AAB7D2681
+      audio: {fileID: 8300000, guid: 3a5cea410529e6d4fa47483ab3909127, type: 3}
+      imagen: {fileID: 8929369444933569912, guid: e1e98c0486ccfe64bbb37c5db6451eea, type: 3}
+      teclaDebug: 0
+      duracionImagen: 5
+      ledsIndices: 06000000
+      colorLeds: {r: 0.68659806, g: 0.8980392, b: 0.27450976, a: 0}
+    pareja:
+      nombre: Tambor2
+      id: 049B65AB7D2681
+      audio: {fileID: 8300000, guid: cd0bb65cca6eeb14ca60d84842bcf266, type: 3}
+      imagen: {fileID: 8929369444933569912, guid: e1e98c0486ccfe64bbb37c5db6451eea, type: 3}
+      teclaDebug: 0
+      duracionImagen: 5
+      ledsIndices: 0700000008000000
+      colorLeds: {r: 0.6862745, g: 0.8980393, b: 0.27450982, a: 0}
+  - nombre: BAquetas
+    principal:
+      nombre: Baquetas 1
+      id: 049581AB7D2681
+      audio: {fileID: 8300000, guid: 0b22de8b5477d42438c1446f000cc8a3, type: 3}
+      imagen: {fileID: 4802015178379530661, guid: bbe9dedfff1cb524eb3dffcf70ad1e8c, type: 3}
+      teclaDebug: 0
+      duracionImagen: 5
+      ledsIndices: 09000000
+      colorLeds: {r: 0.59607846, g: 0, b: 1, a: 0}
+    pareja:
+      nombre: Baqueta2
+      id: 043E8CAB7D2681
+      audio: {fileID: 8300000, guid: c29d5064dd053424b82ff8d0235797db, type: 3}
+      imagen: {fileID: 4802015178379530661, guid: bbe9dedfff1cb524eb3dffcf70ad1e8c, type: 3}
+      teclaDebug: 0
+      duracionImagen: 5
+      ledsIndices: 0a0000000b000000
+      colorLeds: {r: 0.59607846, g: 0, b: 1, a: 0}
+  - nombre: Platillos
+    principal:
+      nombre: Platillos1
+      id: 04BF72AB7D2681
+      audio: {fileID: 8300000, guid: d87232c1fae70674a9c41942a13d9557, type: 3}
+      imagen: {fileID: -3584643028671685613, guid: 6a7229aaa7b339a4c9cc04b4b2f012df, type: 3}
+      teclaDebug: 0
+      duracionImagen: 5
+      ledsIndices: 0c0000000d000000
+      colorLeds: {r: 1, g: 0.5034373, b: 0, a: 0}
+    pareja:
+      nombre: PLatillo2
+      id: 04D59AAB7D2681
+      audio: {fileID: 8300000, guid: e97c557e301a9f54eb3c2d68da824559, type: 3}
+      imagen: {fileID: -3584643028671685613, guid: 6a7229aaa7b339a4c9cc04b4b2f012df, type: 3}
+      teclaDebug: 0
+      duracionImagen: 5
+      ledsIndices: 0e0000000f000000
+      colorLeds: {r: 1, g: 0.5019608, b: 0, a: 0}
   audioFinal: {fileID: 8300000, guid: 7c6518c75fab87544867487218d95bc4, type: 3}
+  musicaFinal: {fileID: 8300000, guid: 33ee1e3726cceed478cac7da7546917f, type: 3}
+  colorAnimacionFinal: {r: 0.9528302, g: 0.19326274, b: 0.8097579, a: 1}

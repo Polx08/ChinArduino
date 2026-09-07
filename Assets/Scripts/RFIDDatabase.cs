@@ -6,6 +6,8 @@ public class RFIDDatabase : ScriptableObject
 {
     public List<TagPair> pares = new List<TagPair>();
     public AudioClip audioFinal;
+    public AudioClip musicaFinal;
+    public Color colorAnimacionFinal = Color.white;
 
     public RFIDEntry BuscarEntradaPorId(string id)
     {

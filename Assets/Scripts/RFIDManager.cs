@@ -15,6 +15,7 @@ public class RFIDManager : MonoBehaviour
     [Header("Referencias UI")]
     public Image imagenUI;
     public AudioSource audioSource;
+    public AudioSource musicaSource;
 
     [Header("Bloqueo inicial (opcional)")]
     [Tooltip("Si se asigna, el RFID no responde hasta que este sensor se active (ej: abrir el cofre)")]
@@ -120,6 +121,7 @@ public class RFIDManager : MonoBehaviour
         cola.Enqueue(ReproducirEntrada(entrada));
 
         ActualizarProgreso(id);
+        LogProgreso();
 
         if (!reproduciendo)
         {
@@ -153,6 +155,39 @@ public class RFIDManager : MonoBehaviour
         if (par != null)
         {
             parEnEspera = par;
+        }
+    }
+
+    void LogProgreso()
+    {
+        List<string> pendientes = new List<string>();
+
+        foreach (var par in database.pares)
+        {
+            if (paresCompletados.Contains(par))
+            {
+                continue;
+            }
+
+            if (par == parEnEspera)
+            {
+                string idPareja = par.pareja != null ? par.pareja.id : "(sin id de pareja asignada)";
+                pendientes.Add("esperando pareja de '" + idPareja + "'");
+            }
+            else
+            {
+                string idPrincipal = par.principal != null ? par.principal.id : "(sin id principal asignada)";
+                pendientes.Add(idPrincipal);
+            }
+        }
+
+        if (pendientes.Count == 0)
+        {
+            Debug.Log("Todos los IDs fueron escaneados.");
+        }
+        else
+        {
+            Debug.Log("IDs restantes por escanear (" + pendientes.Count + "): " + string.Join(", ", pendientes));
         }
     }
 
@@ -223,17 +258,32 @@ public class RFIDManager : MonoBehaviour
 
     IEnumerator FinalizarExperiencia()
     {
+        Debug.Log("Todos los pares fueron completados. Iniciando secuencia final.");
+
+        float duracionAudio = database.audioFinal != null ? database.audioFinal.length : 0f;
+        float duracionMusica = database.musicaFinal != null ? database.musicaFinal.length : 0f;
+        float duracionTotal = Mathf.Max(duracionAudio, duracionMusica);
+
         if (serial != null)
         {
-            serial.EnviarComando("MOTOR:ON");
+            string colorHex = ColorUtility.ToHtmlStringRGB(database.colorAnimacionFinal);
+            int duracionMs = Mathf.RoundToInt(duracionTotal * 1000f);
+            serial.EnviarComando("FINAL:" + colorHex + ":" + duracionMs);
         }
 
         if (audioSource != null && database.audioFinal != null)
         {
             audioSource.clip = database.audioFinal;
             audioSource.Play();
-            yield return new WaitForSeconds(database.audioFinal.length);
         }
+
+        if (musicaSource != null && database.musicaFinal != null)
+        {
+            musicaSource.clip = database.musicaFinal;
+            musicaSource.Play();
+        }
+
+        yield return new WaitForSeconds(duracionTotal);
     }
 
     void OnDisable()
