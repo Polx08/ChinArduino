@@ -102,7 +102,7 @@ MonoBehaviour:
     pareja:
       nombre: PLatillo2
       id: 04D59AAB7D2681
-      audio: {fileID: 8300000, guid: e97c557e301a9f54eb3c2d68da824559, type: 3}
+      audio: {fileID: 8300000, guid: 49b41ade2fef1094db58ec47bde63c6e, type: 3}
       imagen: {fileID: -3584643028671685613, guid: 6a7229aaa7b339a4c9cc04b4b2f012df, type: 3}
       teclaDebug: 0
       duracionImagen: 5
