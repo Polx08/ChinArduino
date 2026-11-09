@@ -1,11 +1,16 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 using System.Collections.Generic;
+using System.Globalization;
 
-public class Proximidad : MonoBehaviour
+public class ProximityAudioTrigger : MonoBehaviour
 {
     [Header("Serial compartido")]
     public ArduinoSerialManager serial;
+
+    [Header("Bloqueo inicial (opcional)")]
+    [Tooltip("Si se asigna, el sensor no activa nada hasta que el telefono se conecte")]
+    public PhoneConnectionServer conexionTelefono;
 
     [Header("Configuracion")]
     public float distanciaUmbralCm = 100f;
@@ -17,7 +22,7 @@ public class Proximidad : MonoBehaviour
     public Color colorLeds = Color.white;
 
     [Header("UI Distancia")]
-    public Text textoDistancia;
+    public TMP_Text textoDistancia;
     public float tiempoOcultarSinLectura = 0.5f;
 
     [Header("Debug sin Arduino")]
@@ -27,6 +32,7 @@ public class Proximidad : MonoBehaviour
     public event System.Action OnActivado;
 
     bool yaReproducido = false;
+    bool telefonoConectado = false;
     float ultimaLecturaTiempo = -999f;
 
     void Start()
@@ -36,15 +42,30 @@ public class Proximidad : MonoBehaviour
             textoDistancia.gameObject.SetActive(false);
         }
 
+        if (conexionTelefono != null)
+        {
+            telefonoConectado = conexionTelefono.TelefonoConectado;
+            conexionTelefono.OnTelefonoConectado += AlConectarTelefono;
+        }
+        else
+        {
+            telefonoConectado = true;
+        }
+
         if (serial != null)
         {
             serial.OnLineaRecibida += ProcesarLinea;
         }
     }
 
+    void AlConectarTelefono()
+    {
+        telefonoConectado = true;
+    }
+
     void ProcesarLinea(string dato)
     {
-        if (float.TryParse(dato, out float distanciaCm))
+        if (float.TryParse(dato, NumberStyles.Float, CultureInfo.InvariantCulture, out float distanciaCm))
         {
             RegistrarLectura(distanciaCm);
         }
@@ -70,7 +91,7 @@ public class Proximidad : MonoBehaviour
             textoDistancia.text = distanciaCm.ToString("0") + " cm";
         }
 
-        if (!yaReproducido && distanciaCm >= distanciaUmbralCm)
+        if (!yaReproducido && telefonoConectado && distanciaCm >= distanciaUmbralCm)
         {
             Reproducir();
         }
@@ -119,6 +140,11 @@ public class Proximidad : MonoBehaviour
         if (serial != null)
         {
             serial.OnLineaRecibida -= ProcesarLinea;
+        }
+
+        if (conexionTelefono != null)
+        {
+            conexionTelefono.OnTelefonoConectado -= AlConectarTelefono;
         }
     }
 }
