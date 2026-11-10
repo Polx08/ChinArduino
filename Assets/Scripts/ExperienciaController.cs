@@ -185,6 +185,16 @@ public class ExperienciaController : MonoBehaviour
 
     void ProcesarMensaje(string mensaje)
     {
+        if (mensaje == "DEBUG:CAJA")
+        {
+            if (cofre != null)
+            {
+                cofre.ActivarManual();
+            }
+
+            return;
+        }
+
         if (!mensaje.StartsWith("OBJETO:"))
         {
             return;

@@ -97,6 +97,14 @@ public class ProximityAudioTrigger : MonoBehaviour
         }
     }
 
+    public void ActivarManual()
+    {
+        if (!yaReproducido)
+        {
+            Reproducir();
+        }
+    }
+
     void ActualizarVisibilidadTexto()
     {
         if (textoDistancia == null)
