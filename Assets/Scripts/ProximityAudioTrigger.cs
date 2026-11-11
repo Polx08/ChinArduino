@@ -32,6 +32,7 @@ public class ProximityAudioTrigger : MonoBehaviour
     public event System.Action OnActivado;
 
     bool yaReproducido = false;
+    bool esperandoCierre = false;
     bool telefonoConectado = false;
     float ultimaLecturaTiempo = -999f;
 
@@ -91,7 +92,13 @@ public class ProximityAudioTrigger : MonoBehaviour
             textoDistancia.text = distanciaCm.ToString("0") + " cm";
         }
 
-        if (!yaReproducido && telefonoConectado && distanciaCm >= distanciaUmbralCm)
+        if (esperandoCierre && distanciaCm < distanciaUmbralCm)
+        {
+            esperandoCierre = false;
+            Debug.Log("Cofre cerrado, listo para una nueva apertura.");
+        }
+
+        if (!yaReproducido && !esperandoCierre && telefonoConectado && distanciaCm >= distanciaUmbralCm)
         {
             Reproducir();
         }
@@ -101,7 +108,28 @@ public class ProximityAudioTrigger : MonoBehaviour
     {
         if (!yaReproducido)
         {
+            esperandoCierre = false;
             Reproducir();
+        }
+    }
+
+    public void Reiniciar()
+    {
+        yaReproducido = false;
+        esperandoCierre = serial != null && !serial.ModoTeclado;
+
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+        }
+
+        if (esperandoCierre)
+        {
+            Debug.Log("Cofre reiniciado. Cierra el cofre para poder abrirlo de nuevo.");
+        }
+        else
+        {
+            Debug.Log("Cofre reiniciado.");
         }
     }
 

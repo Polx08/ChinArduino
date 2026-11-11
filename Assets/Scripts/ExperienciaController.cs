@@ -40,6 +40,10 @@ public class ExperienciaController : MonoBehaviour
     [Header("Mapping")]
     [Tooltip("Se llama al colocar un objeto con (fase, indice). Conecta aqui tu script de mapping")]
     public UnityEvent<int, int> alProyectar;
+    [Tooltip("Se llama al empezar la secuencia final")]
+    public UnityEvent alIniciarFinal;
+    [Tooltip("Se llama al reiniciar la experiencia")]
+    public UnityEvent alReiniciar;
 
     Estado estado = Estado.EsperandoCaja;
     bool reproduciendo = false;
@@ -195,6 +199,12 @@ public class ExperienciaController : MonoBehaviour
             return;
         }
 
+        if (mensaje == "REINICIAR")
+        {
+            Reiniciar();
+            return;
+        }
+
         if (!mensaje.StartsWith("OBJETO:"))
         {
             return;
@@ -206,6 +216,39 @@ public class ExperienciaController : MonoBehaviour
         {
             ProcesarObjeto(fase, indice);
         }
+    }
+
+    void Reiniciar()
+    {
+        StopAllCoroutines();
+        cola.Clear();
+        colocados.Clear();
+        reproduciendo = false;
+        estado = Estado.EsperandoCaja;
+
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+        }
+
+        if (musicaSource != null)
+        {
+            musicaSource.Stop();
+        }
+
+        if (serial != null)
+        {
+            serial.EnviarComando("LED:OFF");
+        }
+
+        if (cofre != null)
+        {
+            cofre.Reiniciar();
+        }
+
+        alReiniciar?.Invoke();
+        Debug.Log("Experiencia reiniciada, esperando la apertura del cofre.");
+        Enviar("REINICIO");
     }
 
     void ProcesarObjeto(int fase, int indice)
@@ -326,6 +369,8 @@ public class ExperienciaController : MonoBehaviour
         float duracionAudio = audioFinal != null ? audioFinal.length : 0f;
         float duracionMusica = musicaFinal != null ? musicaFinal.length : 0f;
         float duracionTotal = Mathf.Max(duracionAudio, duracionMusica);
+
+        alIniciarFinal?.Invoke();
 
         if (serial != null)
         {
